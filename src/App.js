@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
@@ -18,7 +17,7 @@ const registerSchema = Yup.object().shape({
     .max(255, "Email maksimum berisi 255 karakter")
     .required("Email harus diisi"),
   password: Yup.string()
-    .min(8, "Password minmal berisi 8 karakter")
+    .min(8, "Password minimal berisi 8 karakter")
     .max(255, "Password maksimum berisi 255 karakter")
     .required("Password harus diisi"),
   password_confirmation: Yup.string()
@@ -48,19 +47,28 @@ function App() {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [step, setStep] = useState(1);
-
+  const [nama, setNama] = useState({
+    nama: "",
+    umur: "",
+  });
   const formik = useFormik({
-    initialValues,
+    initialValues: initialValues,
     enableReinitialize: true,
     validationSchema: registerSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
-      alert('Yey kamu berhasil login 😆!')
+      alert("Yey kamu berhasil login 😆!");
       setSubmitting(false);
-      resetForm()
-  
+      // ngehapus isi form
+      resetForm();
     },
   });
+  const handleChange = (e) => {
+    setNama({
+      ...nama,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="p-4 w-full max-w-md bg-white rounded-lg 0 shadow-lg sm:p-6 md:p-8 ">
@@ -72,7 +80,28 @@ function App() {
               </h5>
               <div>
                 <input
+                  className="border border-black"
                   type="text"
+                  name="nama"
+                  value={nama.nama}
+                  onChange={handleChange}
+                />
+                <p>{nama.nama}</p>
+              </div>
+              <div>
+                <input
+                  className="border border-black"
+                  type="text"
+                  name="umur"
+                  value={nama.umur}
+                  onChange={handleChange}
+                />
+                <p>{nama.umur}</p>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  // name="first_name"
                   {...formik.getFieldProps("first_name")}
                   className="bg-gray-50 shadow-md text-gray-900 text-sm rounded-md  block w-full px-2.5 py-3 "
                   placeholder="Nama Depan"
